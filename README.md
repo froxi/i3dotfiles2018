@@ -24,5 +24,3 @@ sudo pacman -S xf86-input-synaptics yay i3-gaps i3blocks i3lock termite vim acpi
 + steam
 + ufetch
 + gotop
-
-<mark>yo</mark>
