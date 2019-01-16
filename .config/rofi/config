@@ -1,0 +1,22 @@
+rofi.padding: 64
+rofi.font: Hack Nerd Font 18
+rofi.bw: 2
+
+rofi.lines: 4
+rofi.width: 32
+
+#! State:           ´bg´,     ´fg´,     ´bgalt´,  ´hlbg´,   ´hlfg´
+#rofi.color-normal: #FFFFFF,  #444444,  #FFFFFF,  #444444,  #FFFFFF
+#rofi.color-urgent: #FFFFFF,  #444444,  #FFFFFF,  #444444,  #FFFFFF
+#rofi.color-active: #FFFFFF,  #444444,  #FFFFFF,  #444444,  #FFFFFF
+
+! State:           ´bg´,     ´fg´,     ´bgalt´,  ´hlbg´,   ´hlfg´
+rofi.color-normal: #1D1F28,  #FDFDFD,  #1D1F28,  #FDFDFD,  #1D1F28
+rofi.color-urgent: #1D1F28,  #FDFDFD,  #1D1F28,  #FDFDFD,  #1D1F28
+rofi.color-active: #1D1F28,  #FDFDFD,  #1D1F28,  #FDFDFD,  #1D1F28
+
+#!                  ´background´, ´border´, ´separator´
+#rofi.color-window: #FFFFFF,      #FFFFFF,  #FFFFFF
+
+!                  ´background´, ´border´, ´separator´
+rofi.color-window: #1D1F28,      #1D1F28,  #1D1F28

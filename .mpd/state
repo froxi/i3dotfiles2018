@@ -1,0 +1,21 @@
+sw_volume: 88
+audio_device_state:1:Sound Card
+state: stop
+current: 3
+random: 0
+repeat: 1
+single: 0
+consume: 0
+crossfade: 0
+mixrampdb: 0.000000
+mixrampdelay: -1.000000
+playlist_begin
+0:Cass. - Hiding Place/Cass. - Hiding Place - 01 Autumn Night I.mp3
+1:Cass. - Hiding Place/Cass. - Hiding Place - 02 Emotioncode.mp3
+2:Cass. - Hiding Place/Cass. - Hiding Place - 03 Money Will Destroy You.mp3
+3:Cass. - Hiding Place/Cass. - Hiding Place - 04 Mont.mp3
+4:Cass. - Hiding Place/Cass. - Hiding Place - 05 Forest & Deer.mp3
+5:Cass. - Hiding Place/Cass. - Hiding Place - 06 Glossy Amoog.mp3
+6:Cass. - Hiding Place/Cass. - Hiding Place - 07 Joella.mp3
+7:Cass. - Hiding Place/Cass. - Hiding Place - 08 Mandaringirl.mp3
+playlist_end

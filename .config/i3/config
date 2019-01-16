@@ -1,0 +1,340 @@
+#######################################################################
+#                              variables                              #
+#######################################################################
+
+set $mod        Mod4
+set $gpsi       32
+set $gpso       0
+
+set $bordersize 6
+
+set $COLOR0     #1D1F28
+set $COLOR1     #FDFDFD
+set $COLOR2     #1D1F28
+set $COLOR3     #FF4971
+
+set $bCOLOR0    #1D1F28
+set $bCOLOR1    #FDFDFD
+
+set $ws1 "1:"
+set $ws2 "2:"
+set $ws3 "3:"
+set $ws4 "4:"
+set $ws5 "5:"
+set $ws6 "6:"
+set $ws7 "7:"
+set $ws8 "8:"
+set $ws9 "9:"
+set $ws10 "10:"
+
+#######################################################################
+#                               colors                                #
+#######################################################################
+
+# Layout colors          bord    bg      text    indicator (split)
+client.focused           $COLOR1 $COLOR1 $COLOR0 $COLOR1
+client.focused_inactive  $COLOR2 $COLOR2 $COLOR0 $COLOR2
+client.unfocused         $COLOR2 $COLOR2 $COLOR0 $COLOR2
+client.urgent            $COLOR3 $COLOR3 $COLOR0 $COLOR3
+client.background        $COLOR1 $COLOR1 $COLOR0 $COLOR1 
+
+#######################################################################
+#                               font                                #
+#######################################################################
+
+font pango: Hack Nerd Font, FontAwesome 14px
+
+#######################################################################
+#                               borders gaps                                #
+#######################################################################
+
+hide_edge_borders       none
+smart_borders           on
+for_window [class="^.*"] border pixel $bordersize
+
+gaps inner              $gpsi
+gaps outer              $gpso
+smart_gaps              on
+
+bindsym $mod+Shift+g mode "$mode_gaps"
+mode "$mode_gaps" {
+    bindsym o      mode "$mode_gaps_outer"
+    bindsym i      mode "$mode_gaps_inner"
+
+    bindsym 0      mode "default", exec --no-startup-id i3-msg "gaps inner current set 0" && i3-msg "gaps outer current set 0"
+    bindsym d      mode "default", exec --no-startup-id i3-msg "gaps inner current set $default_gaps_inner" && i3-msg "gaps outer current set $default_gaps_outer"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_inner" {
+    bindsym plus  gaps inner current plus 5
+    bindsym minus gaps inner current minus 5
+    bindsym 0     mode "default", gaps inner current set 0
+    bindsym d     mode "default", gaps inner current set $default_gaps_inner
+
+    bindsym Shift+plus  gaps inner all plus 5
+    bindsym Shift+minus gaps inner all minus 5
+    bindsym Shift+0     mode "default", gaps inner all set 0
+    bindsym Shift+d     mode "default", gaps inner all set $default_gaps_inner
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+mode "$mode_gaps_outer" {
+    bindsym plus  gaps outer current plus 5
+    bindsym minus gaps outer current minus 5
+    bindsym 0     mode "default", gaps outer current set 0
+    bindsym d     mode "default", gaps outer current set $default_gaps_outer
+
+    bindsym Shift+plus  gaps outer all plus 5
+    bindsym Shift+minus gaps outer all minus 5
+    bindsym Shift+0     mode "default", gaps outer all set 0
+    bindsym Shift+d     mode "default", gaps outer all set $default_gaps_outer
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+#######################################################################
+#                        notification bindings                        #
+#######################################################################
+
+bindsym                 $mod+Shift+i exec "scrot; exec notify-send 'screenshot taken'"
+
+floating_modifier $mod
+
+#######################################################################
+#                         launcher & terminal                         #
+#######################################################################
+
+bindsym                 $mod+Return exec termite
+bindsym                 $mod+Shift+Return exec termite --class FXTerm
+#bindsym                $mod+d exec dmenu_run
+bindsym			        $mod+d exec rofi -show run
+bindsym                 $mod+Tab exec rofi -show window
+
+bindsym                 $mod+c exec chromium
+bindsym                 $mod+t exec thunar
+
+
+bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
+
+#######################################################################
+#                             media keys                              #
+#######################################################################
+
+# Alsa audio controls
+#bindsym XF86AudioRaiseVolume exec "amixer -q sset Master,0 1+ unmute"
+#bindsym XF86AudioLowerVolume exec "amixer -q sset Master,0 1- unmute"
+#bindsym XF86AudioMute exec "amixer -q sset Master,0 toggle"
+
+# change volume or toggle mute
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks 
+bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
+
+# Screen brightness controls with notification
+bindsym XF86MonBrightnessUp exec "light -A 5; notify-send 'brightness up'"
+bindsym XF86MonBrightnessDown exec "light -U 5; notify-send 'brightness down'"
+
+
+# Media player controls
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+
+
+#######################################################################
+#                             i3 bindings                             #
+#######################################################################
+
+# kill focused window
+bindsym                 $mod+Shift+q kill
+# reload the configuration file
+bindsym                 $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym                 $mod+Shift+r restart
+
+#######################################################################
+#                          workspace hotkeys                          #
+#######################################################################
+
+# change focus
+bindsym                 $mod+j focus left
+bindsym                 $mod+k focus down
+bindsym                 $mod+l focus up
+bindsym                 $mod+odiaeresis focus right
+
+# alternatively, you can use the cursor keys:
+bindsym                 $mod+Left focus left
+bindsym                 $mod+Down focus down
+bindsym                 $mod+Up focus up
+bindsym                 $mod+Right focus right
+
+# move focused window
+bindsym                 $mod+Shift+j move left
+bindsym                 $mod+Shift+k move down
+bindsym                 $mod+Shift+l move up
+bindsym                 $mod+Shift+odiaeresis move right
+
+# alternatively, you can use the cursor keys:
+bindsym                 $mod+Shift+Left move left
+bindsym                 $mod+Shift+Down move down
+bindsym                 $mod+Shift+Up move up
+bindsym                 $mod+Shift+Right move right
+
+# split
+bindsym $mod+h split h;exec notify-send 'tile horizontally'
+bindsym $mod+v split v;exec notify-send 'tile vertically'
+bindsym $mod+q split toggle
+
+# enter fullscreen mode for the focused container
+bindsym                 $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym                 $mod+s layout stacking
+bindsym                 $mod+w layout tabbed
+bindsym                 $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym                 $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym                 $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym                 $mod+a focus parent
+
+# focus the child container
+#bindsym                $mod+d focus child
+
+#######################################################################
+#                             workspaces                             #
+#######################################################################
+
+# switch to workspace
+bindsym                 $mod+1 workspace $ws1
+bindsym                 $mod+2 workspace $ws2
+bindsym                 $mod+3 workspace $ws3
+bindsym                 $mod+4 workspace $ws4
+bindsym                 $mod+5 workspace $ws5
+bindsym                 $mod+6 workspace $ws6
+bindsym                 $mod+7 workspace $ws7
+bindsym                 $mod+8 workspace $ws8
+bindsym                 $mod+9 workspace $ws9
+bindsym                 $mod+0 workspace $ws10
+
+# move focused container to workspace
+bindsym                 $mod+Shift+1 move container to workspace $ws1
+bindsym                 $mod+Shift+2 move container to workspace $ws2
+bindsym                 $mod+Shift+3 move container to workspace $ws3
+bindsym                 $mod+Shift+4 move container to workspace $ws4
+bindsym                 $mod+Shift+5 move container to workspace $ws5
+bindsym                 $mod+Shift+6 move container to workspace $ws6
+bindsym                 $mod+Shift+7 move container to workspace $ws7
+bindsym                 $mod+Shift+8 move container to workspace $ws8
+bindsym                 $mod+Shift+9 move container to workspace $ws9
+bindsym                 $mod+Shift+0 move container to workspace $ws10
+
+
+#######################################################################
+#                                modes                                #
+#######################################################################
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym odiaeresis resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize";exec notify-send resize
+
+#######################################################################
+#                                 bar                                 #
+#######################################################################
+
+bar {
+        position top
+        status_command i3blocks -c ~/.config/i3/i3blocks.conf
+        font pango: Hack Nerd Font, FontAwesome 12
+        strip_workspace_numbers no
+        separator_symbol "·"
+        colors{
+                background              $bCOLOR0
+                statusline              $bCOLOR1
+                separator               $bCOLOR1
+
+
+                #layout                 border  bg      text
+                focused_workspace       $bCOLOR1 $bCOLOR1 $bCOLOR0
+                active_workspace        $bCOLOR1 $bCOLOR1 $bCOLOR0
+                inactive_workspace      $bCOLOR0 $bCOLOR0 $bCOLOR1
+                urgent_workspace        $bCOLOR0 $bCOLOR0 $bCOLOR1
+                binding_mode            $bCOLOR0 $bCOLOR0 $bCOLOR1
+        }
+}
+
+#######################################################################
+#                               startup                               #
+#######################################################################
+#exec_always redshift -t 6500:3500 &
+exec --no-startup-id owncloud &
+exec --no-startup-id nm-applet &
+exec --no-startup-id Blueman-manager &
+exec --no-startup-id mpd &
+exec --no-startup-id mpc &
+exec --no-startup-id telegram-desktop &
+exec --no-startup-id steam &
+exec --no-startup-id spotify &
+exec --no-startup-id pamac-tray &
+
+exec --no-startup-id compton -b
+
+
+#exec_always --no-startup-id killall back4.sh
+#exec_always --no-startup-id $HOME/Git/foo-Wallpaper-Feh-Gif/back4.sh 0.010 $HOME/Git/foo-Wallpaper-Feh-Gif/gif/train.gif &
+exec_always nitrogen --restore
+#exec_always feh --bg-center /home/dom/Pictures/wallhaven-723334.jpg
+
+exec --no-startup-id i3-msg 'workspace $ws2; exec /usr/bin/termite --class FXTerm'
+
+
+#######################################################################
+#                         window assignments                          #
+#######################################################################
+for_window [class="discord"] move container to workspace $ws6
+for_window [class="Subl3"] move container to workspace $ws3
+for_window [class="Telegram"] move container to workspace $ws8
+for_window [class="Steam"] move container to workspace $ws7
+for_window [class="Spotify"] move container to workspace $ws9
+for_window [class="Firefox"] move container to workspace $ws1
+for_window [class="Chromium"] move container to workspace $ws1
+for_window [class="JDownloader"] move container to workspace $ws10
+for_window [class="Thunderbird"] move container to workspace $ws6
+for_window [class="vlc"] floating enable
+for_window [class="FXTerm"] floating enable
+for_window [class="Pidgin"] floating enable, move container to workspace $ws8
+for_window [class="baka-mplayer"] floating enable
+for_window [class="Pavucontrol"] floating enable
+for_window [class="Blueman-manager"] floating enable
