@@ -5,15 +5,17 @@
 set $mod        Mod4
 set $gpsi       32
 set $gpso       0
+set $default_gaps_inner 32
+set $default_gaps_outer 0
 
-set $bordersize 6
+set $bordersize 1
 
 set $COLOR0     #1D1F28
 set $COLOR1     #FDFDFD
 set $COLOR2     #1D1F28
 set $COLOR3     #FF4971
 
-set $bCOLOR0    #1D1F28
+set $bCOLOR0    #1D1F2800
 set $bCOLOR1    #FDFDFD
 
 set $ws1 "1:"
@@ -36,7 +38,7 @@ client.focused           $COLOR1 $COLOR1 $COLOR0 $COLOR1
 client.focused_inactive  $COLOR2 $COLOR2 $COLOR0 $COLOR2
 client.unfocused         $COLOR2 $COLOR2 $COLOR0 $COLOR2
 client.urgent            $COLOR3 $COLOR3 $COLOR0 $COLOR3
-client.background        $COLOR1 $COLOR1 $COLOR0 $COLOR1 
+client.background        $COLOR1 $COLOR1 $COLOR0 $COLOR1
 
 #######################################################################
 #                               font                                #
@@ -102,7 +104,9 @@ mode "$mode_gaps_outer" {
 #                        notification bindings                        #
 #######################################################################
 
-bindsym                 $mod+Shift+i exec "scrot; exec notify-send 'screenshot taken'"
+# screenshots
+bindsym $mod+Control+3 exec maim -u | xclip -selection clipboard -t image/png && notify-send "Screenshot captured"
+bindsym $mod+Control+4 exec maim -s -u | xclip -selection clipboard -t image/png && notify-send "Screenshot captured"
 
 floating_modifier $mod
 
@@ -132,7 +136,7 @@ bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart du
 #bindsym XF86AudioMute exec "amixer -q sset Master,0 toggle"
 
 # change volume or toggle mute
-bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks 
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks
 bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
 bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
 
@@ -276,7 +280,8 @@ bindsym $mod+r mode "resize";exec notify-send resize
 
 bar {
         position top
-        status_command i3blocks -c ~/.config/i3/i3blocks.conf
+        i3bar_command i3bar -t
+        status_command i3blocks -c ~/.config/i3blocks/i3blocks.conf
         font pango: Hack Nerd Font, FontAwesome 12
         strip_workspace_numbers no
         separator_symbol "·"
@@ -298,8 +303,8 @@ bar {
 #######################################################################
 #                               startup                               #
 #######################################################################
-#exec_always redshift -t 6500:3500 &
-exec --no-startup-id owncloud &
+exec --no-startup-id redshift &
+exec --no-startup-id nextcloud &
 exec --no-startup-id nm-applet &
 exec --no-startup-id Blueman-manager &
 exec --no-startup-id mpd &
@@ -307,13 +312,8 @@ exec --no-startup-id mpc &
 exec --no-startup-id telegram-desktop &
 exec --no-startup-id steam &
 exec --no-startup-id spotify &
-exec --no-startup-id pamac-tray &
-
 exec --no-startup-id compton -b
 
-
-#exec_always --no-startup-id killall back4.sh
-#exec_always --no-startup-id $HOME/Git/foo-Wallpaper-Feh-Gif/back4.sh 0.010 $HOME/Git/foo-Wallpaper-Feh-Gif/gif/train.gif &
 exec_always nitrogen --restore
 #exec_always feh --bg-center /home/dom/Pictures/wallhaven-723334.jpg
 
@@ -324,11 +324,11 @@ exec --no-startup-id i3-msg 'workspace $ws2; exec /usr/bin/termite --class FXTer
 #                         window assignments                          #
 #######################################################################
 for_window [class="discord"] move container to workspace $ws6
-for_window [class="Subl3"] move container to workspace $ws3
+for_window [class="Atom"] move container to workspace $ws3
 for_window [class="Telegram"] move container to workspace $ws8
 for_window [class="Steam"] move container to workspace $ws7
 for_window [class="Spotify"] move container to workspace $ws9
-for_window [class="Firefox"] move container to workspace $ws1
+for_window [class="Google-chrome"] move container to workspace $ws1
 for_window [class="Chromium"] move container to workspace $ws1
 for_window [class="JDownloader"] move container to workspace $ws10
 for_window [class="Thunderbird"] move container to workspace $ws6
