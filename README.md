@@ -1,7 +1,14 @@
 ## i3dotfiles2018
 ***
 
+# current
+
+![img](screenshot_new.png)
+
+# old
+
 ![img](screenshot.png)
+
 
 ***
 
