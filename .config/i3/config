@@ -8,15 +8,43 @@ set $gpso       0
 set $default_gaps_inner 32
 set $default_gaps_outer 0
 
-set $bordersize 1
+set $bordersize 6
 
-set $COLOR0     #1D1F28
-set $COLOR1     #FDFDFD
-set $COLOR2     #1D1F28
-set $COLOR3     #FF4971
+#######################################################################
+#                              pywal                                  #
+#######################################################################
 
-set $bCOLOR0    #1D1F2800
-set $bCOLOR1    #FDFDFD
+####
+# color2 background
+# color7 text
+# color9 border
+# color13 urgent
+###
+
+set_from_resource $COLOR0 i3wm.color0 #1D1F28
+set_from_resource $COLOR1 i3wm.color2 #FDFDFD
+set_from_resource $COLOR2 i3wm.color0 #FDFDFD
+set_from_resource $COLOR3 i3wm.color13 #FF4971
+
+set_from_resource $bCOLOR0 i3wm.color0 #1D1F28
+set_from_resource $bCOLOR1 i3wm.color7 #FDFDFD
+set_from_resource $bCOLOR2 i3wm.color2 #FDFDFD
+
+#######################################################################
+#                              fallback                               #
+#######################################################################
+
+##### set $COLOR0     #1D1F28     ##BG
+##### set $COLOR1     #FDFDFD     ##FG
+##### set $COLOR2     #1D1F28     ##BG
+##### set $COLOR3     #FF4971     ##urgent
+#####
+##### set $bCOLOR0    #1D1F28
+##### set $bCOLOR1    #FDFDFD
+
+#######################################################################
+#                              workspace                              #
+#######################################################################
 
 set $ws1 "1:"
 set $ws2 "2:"
@@ -25,7 +53,7 @@ set $ws4 "4:"
 set $ws5 "5:"
 set $ws6 "6:"
 set $ws7 "7:"
-set $ws8 "8:"
+set $ws8 "8:"
 set $ws9 "9:"
 set $ws10 "10:"
 
@@ -41,13 +69,13 @@ client.urgent            $COLOR3 $COLOR3 $COLOR0 $COLOR3
 client.background        $COLOR1 $COLOR1 $COLOR0 $COLOR1
 
 #######################################################################
-#                               font                                #
+#                               font                                  #
 #######################################################################
 
 font pango: Hack Nerd Font, FontAwesome 14px
 
 #######################################################################
-#                               borders gaps                                #
+#                               borders gaps                          #
 #######################################################################
 
 hide_edge_borders       none
@@ -55,50 +83,11 @@ smart_borders           on
 for_window [class="^.*"] border pixel $bordersize
 
 gaps inner              $gpsi
-gaps outer              $gpso
+gaps outer              $gps
 smart_gaps              on
 
-bindsym $mod+Shift+g mode "$mode_gaps"
-mode "$mode_gaps" {
-    bindsym o      mode "$mode_gaps_outer"
-    bindsym i      mode "$mode_gaps_inner"
-
-    bindsym 0      mode "default", exec --no-startup-id i3-msg "gaps inner current set 0" && i3-msg "gaps outer current set 0"
-    bindsym d      mode "default", exec --no-startup-id i3-msg "gaps inner current set $default_gaps_inner" && i3-msg "gaps outer current set $default_gaps_outer"
-
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
-mode "$mode_gaps_inner" {
-    bindsym plus  gaps inner current plus 5
-    bindsym minus gaps inner current minus 5
-    bindsym 0     mode "default", gaps inner current set 0
-    bindsym d     mode "default", gaps inner current set $default_gaps_inner
-
-    bindsym Shift+plus  gaps inner all plus 5
-    bindsym Shift+minus gaps inner all minus 5
-    bindsym Shift+0     mode "default", gaps inner all set 0
-    bindsym Shift+d     mode "default", gaps inner all set $default_gaps_inner
-
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-
-mode "$mode_gaps_outer" {
-    bindsym plus  gaps outer current plus 5
-    bindsym minus gaps outer current minus 5
-    bindsym 0     mode "default", gaps outer current set 0
-    bindsym d     mode "default", gaps outer current set $default_gaps_outer
-
-    bindsym Shift+plus  gaps outer all plus 5
-    bindsym Shift+minus gaps outer all minus 5
-    bindsym Shift+0     mode "default", gaps outer all set 0
-    bindsym Shift+d     mode "default", gaps outer all set $default_gaps_outer
-
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
+bindsym                 $mod+Shift+g "gaps inner current set 0"
+bindsym                 $mod+Control+g "gaps inner current set $gpsig"
 
 #######################################################################
 #                        notification bindings                        #
@@ -114,26 +103,26 @@ floating_modifier $mod
 #                         launcher & terminal                         #
 #######################################################################
 
-bindsym                 $mod+Return exec termite
-bindsym                 $mod+Shift+Return exec termite --class FXTerm
+bindsym                 $mod+Return exec kitty
+bindsym                 $mod+Shift+Return exec kitty --class FXTerm
 #bindsym                $mod+d exec dmenu_run
 bindsym			        $mod+d exec rofi -show run
 bindsym                 $mod+Tab exec rofi -show window
 
 bindsym                 $mod+c exec chromium
-bindsym                 $mod+t exec thunar
-
+bindsym                 $mod+t exec pcmanfm
 
 bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
 
 #######################################################################
-#                             media keys                              #
+#                         reset resolution                            #
 #######################################################################
 
-# Alsa audio controls
-#bindsym XF86AudioRaiseVolume exec "amixer -q sset Master,0 1+ unmute"
-#bindsym XF86AudioLowerVolume exec "amixer -q sset Master,0 1- unmute"
-#bindsym XF86AudioMute exec "amixer -q sset Master,0 toggle"
+bindsym                 $mod+shift+s exec "xrandr -s 1920x1080 &"
+
+#######################################################################
+#                             media keys                              #
+#######################################################################
 
 # change volume or toggle mute
 bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks
@@ -144,12 +133,10 @@ bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN
 bindsym XF86MonBrightnessUp exec "light -A 5; notify-send 'brightness up'"
 bindsym XF86MonBrightnessDown exec "light -U 5; notify-send 'brightness down'"
 
-
 # Media player controls
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
-
 
 #######################################################################
 #                             i3 bindings                             #
@@ -278,27 +265,30 @@ bindsym $mod+r mode "resize";exec notify-send resize
 #                                 bar                                 #
 #######################################################################
 
-bar {
-        position top
-        i3bar_command i3bar -t
-        status_command i3blocks -c ~/.config/i3blocks/i3blocks.conf
-        font pango: Hack Nerd Font, FontAwesome 12
-        strip_workspace_numbers no
-        separator_symbol "·"
-        colors{
-                background              $bCOLOR0
-                statusline              $bCOLOR1
-                separator               $bCOLOR1
+# Polybar
+exec_always --no-startup-id ~/.config/polybar/polybar.sh &
 
-
-                #layout                 border  bg      text
-                focused_workspace       $bCOLOR1 $bCOLOR1 $bCOLOR0
-                active_workspace        $bCOLOR1 $bCOLOR1 $bCOLOR0
-                inactive_workspace      $bCOLOR0 $bCOLOR0 $bCOLOR1
-                urgent_workspace        $bCOLOR0 $bCOLOR0 $bCOLOR1
-                binding_mode            $bCOLOR0 $bCOLOR0 $bCOLOR1
-        }
-}
+#bar {
+#        position top
+#        i3bar_command i3bar
+#        status_command i3blocks -c ~/.config/i3blocks/i3blocks.conf
+#        font pango: Hack Nerd Font, FontAwesome 12
+#        strip_workspace_numbers no
+#        separator_symbol "·"
+#        colors{
+#                background              $bCOLOR0
+#                statusline              $bCOLOR1
+#                separator               $bCOLOR1
+#
+#
+#                #layout                 border  bg      text
+#                focused_workspace       $bCOLOR2 $bCOLOR2 $bCOLOR0
+#                active_workspace        $bCOLOR1 $bCOLOR1 $bCOLOR0
+#                inactive_workspace      $bCOLOR0 $bCOLOR0 $bCOLOR1
+#                urgent_workspace        $bCOLOR0 $bCOLOR0 $bCOLOR1
+#                binding_mode            $bCOLOR0 $bCOLOR0 $bCOLOR1
+#        }
+#}
 
 #######################################################################
 #                               startup                               #
@@ -314,17 +304,19 @@ exec --no-startup-id steam &
 exec --no-startup-id spotify &
 exec --no-startup-id compton -b
 
-exec_always nitrogen --restore
+#exec_always nitrogen --restore
+
+exec_always wal -R
 #exec_always feh --bg-center /home/dom/Pictures/wallhaven-723334.jpg
 
-exec --no-startup-id i3-msg 'workspace $ws2; exec /usr/bin/termite --class FXTerm'
+exec --no-startup-id i3-msg 'workspace $ws2; exec /usr/bin/kitty --class FXTerm'
 
 
 #######################################################################
 #                         window assignments                          #
 #######################################################################
 for_window [class="discord"] move container to workspace $ws6
-for_window [class="Atom"] move container to workspace $ws3
+for_window [class="Subl3"] move container to workspace $ws3
 for_window [class="Telegram"] move container to workspace $ws8
 for_window [class="Steam"] move container to workspace $ws7
 for_window [class="Spotify"] move container to workspace $ws9
