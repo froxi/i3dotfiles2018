@@ -83,19 +83,18 @@ smart_borders           on
 for_window [class="^.*"] border pixel $bordersize
 
 gaps inner              $gpsi
-gaps outer              $gps
+gaps outer              $gpso
 smart_gaps              on
 
 bindsym                 $mod+Shift+g "gaps inner current set 0"
-bindsym                 $mod+Control+g "gaps inner current set $gpsig"
+bindsym                 $mod+Control+g "gaps inner current set $gpsi"
 
 #######################################################################
 #                        notification bindings                        #
 #######################################################################
 
 # screenshots
-bindsym $mod+Control+3 exec maim -u | xclip -selection clipboard -t image/png && notify-send "Screenshot captured"
-bindsym $mod+Control+4 exec maim -s -u | xclip -selection clipboard -t image/png && notify-send "Screenshot captured"
+bindsym $mod+Shift+i exec "scrot; exec notify-send 'Screenshot captured'"
 
 floating_modifier $mod
 
