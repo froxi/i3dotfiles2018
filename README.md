@@ -21,8 +21,8 @@ sudo pacman -S xf86-input-synaptics yay i3-gaps i3blocks i3lock termite vim acpi
 
 + nerd-fonts-hack
 + nerd-fonts-complete
-+ vimix theme
-+ la capitaine icon theme
++ arc-theme
++ flat remix icons
 + discord 
 + spotify
 + google chrome
