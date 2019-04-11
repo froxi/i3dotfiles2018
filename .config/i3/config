@@ -108,7 +108,6 @@ bindsym                 $mod+Shift+Return exec kitty --class FXTerm
 bindsym			        $mod+d exec rofi -show run
 bindsym                 $mod+Tab exec rofi -show window
 
-bindsym                 $mod+c exec chromium
 bindsym                 $mod+t exec pcmanfm
 
 bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
@@ -124,9 +123,9 @@ bindsym                 $mod+shift+s exec "xrandr -s 1920x1080 &"
 #######################################################################
 
 # change volume or toggle mute
-bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks
-bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 i3blocks
-bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10
+bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%- && pkill -RTMIN+10 
+bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 
 
 # Screen brightness controls with notification
 bindsym XF86MonBrightnessUp exec "light -A 5; notify-send 'brightness up'"
@@ -152,25 +151,13 @@ bindsym                 $mod+Shift+r restart
 #                          workspace hotkeys                          #
 #######################################################################
 
-# change focus
-bindsym                 $mod+j focus left
-bindsym                 $mod+k focus down
-bindsym                 $mod+l focus up
-bindsym                 $mod+odiaeresis focus right
-
-# alternatively, you can use the cursor keys:
+#focus
 bindsym                 $mod+Left focus left
 bindsym                 $mod+Down focus down
 bindsym                 $mod+Up focus up
 bindsym                 $mod+Right focus right
 
-# move focused window
-bindsym                 $mod+Shift+j move left
-bindsym                 $mod+Shift+k move down
-bindsym                 $mod+Shift+l move up
-bindsym                 $mod+Shift+odiaeresis move right
-
-# alternatively, you can use the cursor keys:
+#move
 bindsym                 $mod+Shift+Left move left
 bindsym                 $mod+Shift+Down move down
 bindsym                 $mod+Shift+Up move up
@@ -184,22 +171,11 @@ bindsym $mod+q split toggle
 # enter fullscreen mode for the focused container
 bindsym                 $mod+f fullscreen toggle
 
-# change container layout (stacked, tabbed, toggle split)
-bindsym                 $mod+s layout stacking
-bindsym                 $mod+w layout tabbed
-bindsym                 $mod+e layout toggle split
-
 # toggle tiling / floating
 bindsym                 $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
 bindsym                 $mod+space focus mode_toggle
-
-# focus the parent container
-bindsym                 $mod+a focus parent
-
-# focus the child container
-#bindsym                $mod+d focus child
 
 #######################################################################
 #                             workspaces                             #
@@ -267,35 +243,13 @@ bindsym $mod+r mode "resize";exec notify-send resize
 # Polybar
 exec_always --no-startup-id ~/.config/polybar/polybar.sh &
 
-#bar {
-#        position top
-#        i3bar_command i3bar
-#        status_command i3blocks -c ~/.config/i3blocks/i3blocks.conf
-#        font pango: Hack Nerd Font, FontAwesome 12
-#        strip_workspace_numbers no
-#        separator_symbol "·"
-#        colors{
-#                background              $bCOLOR0
-#                statusline              $bCOLOR1
-#                separator               $bCOLOR1
-#
-#
-#                #layout                 border  bg      text
-#                focused_workspace       $bCOLOR2 $bCOLOR2 $bCOLOR0
-#                active_workspace        $bCOLOR1 $bCOLOR1 $bCOLOR0
-#                inactive_workspace      $bCOLOR0 $bCOLOR0 $bCOLOR1
-#                urgent_workspace        $bCOLOR0 $bCOLOR0 $bCOLOR1
-#                binding_mode            $bCOLOR0 $bCOLOR0 $bCOLOR1
-#        }
-#}
-
 #######################################################################
 #                               startup                               #
 #######################################################################
 exec --no-startup-id redshift &
 exec --no-startup-id nextcloud &
 exec --no-startup-id nm-applet &
-exec --no-startup-id Blueman-manager &
+exec --no-startup-id blueman-applet &
 exec --no-startup-id mpd &
 exec --no-startup-id mpc &
 exec --no-startup-id telegram-desktop &
@@ -303,10 +257,7 @@ exec --no-startup-id steam &
 exec --no-startup-id spotify &
 exec --no-startup-id compton -b
 
-#exec_always nitrogen --restore
-
 exec_always wal -R
-#exec_always feh --bg-center /home/dom/Pictures/wallhaven-723334.jpg
 
 exec --no-startup-id i3-msg 'workspace $ws2; exec /usr/bin/kitty --class FXTerm'
 

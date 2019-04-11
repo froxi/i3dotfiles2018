@@ -1,0 +1,16 @@
+{
+	"bootstrapped": true,
+	"in_process_packages":
+	[
+	],
+	"installed_packages":
+	[
+		"Base16 Color Schemes",
+		"Dracula Color Scheme",
+		"FileIcons",
+		"i3 wm",
+		"Materialize",
+		"Package Control",
+		"VEX"
+	]
+}
